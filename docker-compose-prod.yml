@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  app:
+    image: docker.ramp.eu/ed-pvt/dome-matomo-backend-app:dev_6_03_2024_01
+    ports:
+      - ${MATOMO_ANALYTICS_LOCAL_PORT:-18080}:8080
+    environment:
+      SPRING_DATASOURCE_URL: ${MATOMO_ANALYTICS_DB_HOST:-jdbc:postgresql://localhost}:${MATOMO_ANALYTICS_DB_PORT_NUMBER:-5433}/${MATOMO_ANALYTICS_DB:-matomo_data_json}
+      #      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5433/matomo_data_json
+      SPRING_DATASOURCE_USERNAME: ${MATOMO_ANALYTICS_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MATOMO_ANALYTICS_DB_PASS}
+      MATOMO_TOKEN_AUTH: ${MATOMO_TOKEN_AUTH}
+      MATOMO_SITE_ID: ${MATOMO_SITE_ID:-1}
+      MATOMO_API_URL: ${MATOMO_API_URL:-http://ramp.eu/matomo/index.php}
+    depends_on:
+      - db
+  db:
+    image: postgres
+    ports:
+      - ${MATOMO_ANALYTICS_DB_PORT_NUMBER:-5433}:5432
+    environment:
+      POSTGRES_DB: ${MATOMO_ANALYTICS_DB:-matomo_data_json}
+      POSTGRES_USER: ${MATOMO_ANALYTICS_DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${MATOMO_ANALYTICS_DB_PASS}

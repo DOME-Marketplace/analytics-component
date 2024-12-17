@@ -1,0 +1,36 @@
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "health"
+
+
+spring:
+  datasource:
+    #        localhost
+    url: ${ANALYTICS_DB_HOST:jdbc:postgresql://localhost:5433/matomo_data_json}
+    username: ${ANALYTICS_DB_USER:postgres}
+    password: ${ANALYTICS_DB_USER}
+
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+matomo:
+  matomoTokenAuth: ${MATOMO_TOKEN_AUTH}
+  matomoSiteId: ${MATOMO_SITE_ID:3}
+  matomoApiUrl: ${MATOMO_API_URL:https://dome-webstats.eurodyn.com/index.php}
+
+tmforum:
+  host: ${TMFORUM_HOST:https://tmforum.dome-marketplace-sbx.org}
+  api_key: ${TMFORUM_API_KEY}
